@@ -5,6 +5,9 @@ pipeline {
         jdk "OracleJDK17"
         maven "MAVEN3"
     }
+    environment {
+        scannerHome = tool 'sonar5'
+    }
 
     stages {
 
@@ -24,6 +27,14 @@ pipeline {
         stage('checkstyle') {
             steps {
                 sh 'mvn checkstyle:checkstyle'
+            }
+        }
+
+        stage('Sonarcloud') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh ""${scannerHome}/bin/sonar-scanner""
+                }
             }
         }
     }
