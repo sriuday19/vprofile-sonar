@@ -1,6 +1,6 @@
 FROM openjdk-11-jdk AS BUILD_IMAGE
 RUN apt update && apt install maven -y
-ADD ../../ vprofile-app
+ADD .././ vprofile-app
 RUN cd vprofile-app && mvn install
 
 FROM tomcat:8-jre11-openjdk
