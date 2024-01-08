@@ -7,9 +7,19 @@ pipeline {
     }
     environment {
         scannerHome = tool 'sonar5'
+        image_registry = "sriuday19/vprofile-kube"
+        docker_cred = 'docker-login'
+        docker_url = 'https://hub.docker.com'
     }
 
     stages {
+
+        stage('Build code') {
+            steps {
+                sh 'mvn clean install -DskipTests'
+            }
+        }
+
         stage('Tests') {
             steps {
                 sh 'mvn test'
@@ -35,6 +45,25 @@ pipeline {
               timeout(time: 1, unit: 'MINUTES') {
                 waitForQualityGate abortPipeline: true
               }
+            }
+        }
+
+        stage('Build image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${image_repo}:${env.BUILD_NUMBER}", "./Dockerfiles/app/")
+                }
+                
+            }
+        }
+
+        stage('pushing the image to docker hub') {
+            steps {
+                script {
+                docker.withRegistry('', docker-login)
+                dockerImage.push("v${env.BUILD_NUMBER}")
+                dockerImage.push("latest")
+                }
             }
         }
     }
