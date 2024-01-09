@@ -1,4 +1,4 @@
-FROM openjdk-11-jdk AS BUILD_IMAGE
+FROM openjdk:11 AS BUILD_IMAGE
 RUN apt update && apt install maven -y
 RUN git clone https://github.com/sriuday19/vprofile-sonar.git
 RUN cd vprofile-sonar && mvn install
