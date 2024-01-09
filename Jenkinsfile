@@ -9,7 +9,7 @@ pipeline {
         scannerHome = tool 'sonar5'
         image_registry = "sriuday19/vprofile-kube"
         docker_cred = 'docker-login'
-        docker_url = 'https://hub.docker.com'
+        docker_url = 'https://hub.docker.com/repository/docker/sriuday19/vprofile-kube'
     }
 
     stages {
@@ -60,9 +60,11 @@ pipeline {
         stage('pushing the image to docker hub') {
             steps {
                 script {
-                docker.withRegistry('', docker-login)
-                dockerImage.push("v${env.BUILD_NUMBER}")
-                dockerImage.push("latest")
+                docker.withRegistry(docker_url, docker-login) {
+                     dockerImage.push("v${env.BUILD_NUMBER}")
+                     dockerImage.push("latest")
+                }
+               
                 }
             }
         }
