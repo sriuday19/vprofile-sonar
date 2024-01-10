@@ -8,6 +8,7 @@ pipeline {
     environment {
         scannerHome = tool 'sonar5'
         image_registry = "sriuday19/vprofile-kube"
+        image_name= 'vprofile'
         docker_cred = 'docker-login'
         docker_url = 'https://hub.docker.com/repository/docker/sriuday19/vprofile-kube'
     }
@@ -61,7 +62,7 @@ pipeline {
             steps {
                 script {
                 docker.withRegistry('', docker_cred) {
-                     dockerImage.push("vprofie-app:${env.BUILD_NUMBER}")
+                     dockerImage.push("${image_name}v${env.BUILD_NUMBER}")
                 }
                
                 }
