@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                 docker.withRegistry('', docker_cred) {
-                     dockerImage.push("v${env.BUILD_NUMBER}:latest")
+                     dockerImage.push("vprofie-app:${env.BUILD_NUMBER}")
                 }
                
                 }
