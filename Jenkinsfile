@@ -62,7 +62,7 @@ pipeline {
             steps {
                 script {
                 docker.withRegistry('', docker_cred) {
-                     dockerImage.push("${image_name}v${env.BUILD_NUMBER}")
+                     dockerImage.push("${image_name}-v${env.BUILD_NUMBER}-latest")
                 }
                
                 }
